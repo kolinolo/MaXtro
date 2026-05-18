@@ -1,6 +1,10 @@
 from componentes.GerenciadorTarefas import montarTarefas
 from componentes.Executivo import executarPython
 
+from apscheduler.schedulers.blocking import BlockingScheduler
+
+
+scheduler = BlockingScheduler()
 
 
 
@@ -16,9 +20,24 @@ for tarefa in tarefas:
 
         case('python'):
 
-            resultado = executarPython(tarefa)
+            scheduler.add_job(
+                executarPython,
+                'interval',
 
-    print(resultado)
+                minutes=tarefa['interval_minutes'],
+
+                args=[tarefa],
+
+                id=tarefa['id'],
+
+                max_instances=1
+            )
+
+
+
+print("iniciando MaXtro")
+scheduler.start()
+
 
 
 

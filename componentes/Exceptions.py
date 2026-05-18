@@ -11,3 +11,11 @@ class TarefaInvalida(Exception):
     def __init__(self, mensagem):
 
         self.mensagem = mensagem
+
+
+class ErroExecutandoPython(Exception):
+
+    def __init__(self, mensagem,resultado):
+
+        self.mensagem = mensagem
+        self.infos = resultado
