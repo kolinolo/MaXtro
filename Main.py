@@ -1,9 +1,11 @@
 from componentes.GerenciadorTarefas import montarTarefas
 from componentes.Executivo import executarPython
 from apscheduler.schedulers.blocking import BlockingScheduler
-
-
 from os import system
+
+from dotenv import load_dotenv
+
+load_dotenv(r"MaXtro.env")
 
 
 system('cls')
