@@ -7,20 +7,32 @@ from componentes.Exceptions import NotJsonException, TarefaInvalida
 
 def verificaTipo(js):
 
+    parFaltante = []
+    exigido = []
+
     match js['tipo']:
 
         case 'python':
 
-            parFaltante = []
+            exigido = ['id','enabled','python_path','working_dir','script']
 
-            for par in ['id','enabled','python_path','working_dir','script']:
 
-                if par not in js:
-                    parFaltante.append(par)
 
-                if len(parFaltante) > 0:
-                    raise TarefaInvalida(f'parâmetros Python não configurados: {parFaltante}')
+        case 'powershell':
 
+            exigido = ['id', 'enabled', 'working_dir','script']
+
+        case _:
+            print(f'Tipo de execução não configurada {js['tipo']}')
+
+
+    for par in exigido:
+
+        if par not in js:
+            parFaltante.append(par)
+
+        if len(parFaltante) > 0:
+            raise TarefaInvalida(f'parâmetros {js['tipo']} não configurado(s): {parFaltante}')
 
     interval =  'interval_minutes' in js
     startTime = 'start_time' in js

@@ -1,5 +1,5 @@
 from componentes.GerenciadorTarefas import montarTarefas
-from componentes.Executivo import executarPython
+from componentes.Executivo import executarPython, executaPowerShell
 from apscheduler.schedulers.blocking import BlockingScheduler
 from os import system
 
@@ -23,11 +23,11 @@ for tarefa in tarefas:
 
     resultado = None
 
-    match(tarefa['tipo']):
+    match(tarefa['trigger']):
 
-        case('python'):
+        case('interval'):
 
-            if tarefa['trigger'] == 'interval':
+            if tarefa['tipo'] == 'python':
                 scheduler.add_job(
                     executarPython,
                     'interval',
@@ -41,11 +41,27 @@ for tarefa in tarefas:
                     max_instances=1
                 )
 
-                indices[tarefa['id']] = (f'A cada {tarefa['interval_minutes']}' +
-                                         (' minutos' if tarefa['interval_minutes'] > 1 else ' minuto'))
+            elif tarefa['tipo'] == 'powershell':
 
-            else:
-                print('Trigger não definido')
+                scheduler.add_job(
+                    executaPowerShell,
+                    'interval',
+
+                    minutes=tarefa['interval_minutes'],
+
+                    args=[tarefa],
+
+                    id=tarefa['id'],
+
+                    max_instances=1
+                )
+
+
+            indices[tarefa['id']] = (f'A cada {tarefa['interval_minutes']}' +
+                                     (' minutos' if tarefa['interval_minutes'] > 1 else ' minuto'))
+
+        case _:
+            print('Trigger não definido')
 
 
 print("iniciando MaXtro\n")

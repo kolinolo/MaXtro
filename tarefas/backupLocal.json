@@ -4,9 +4,10 @@
 
   "id": "BackupLocal",
   "enabled": true,
-  "interval_minutes": 60,
+  "interval_minutes": 1,
 
-  "scriptPath": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\MaXtro\\scripts\\Local\\Backup.ps1"
+  "working_dir": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\MaXtro\\scripts\\Local\\",
+  "script": "Backup.ps1"
 
 }
 
