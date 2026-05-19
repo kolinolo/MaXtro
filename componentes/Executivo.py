@@ -16,7 +16,7 @@ def executarPython(tarefa):
 
         capture_output=True,
         text=True,
-
+        errors='replace',
         encoding='utf-8'
     )
 

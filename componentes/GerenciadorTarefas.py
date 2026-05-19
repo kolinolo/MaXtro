@@ -22,11 +22,15 @@ def verificaTipo(js):
                     raise TarefaInvalida(f'parâmetros Python não configurados: {parFaltante}')
 
 
+    interval =  'interval_minutes' in js
+    startTime = 'start_time' in js
 
-    if 'interval_minutes' not in js  and 'start_time' not in js:
+    if not( interval or startTime):
+
         raise TarefaInvalida('Horário ou intervalo de execução não definido, tarefa sera ignorada')
 
-
+    elif interval and startTime:
+        raise TarefaInvalida('Horário e intervalo de execução definidos ao mesmo tempo')
 
     return True
 
@@ -45,6 +49,12 @@ def montarTarefas() -> list:
             js = carregaJSON(diretorio(fr"tarefas\{t}"))
 
             verificaTipo(js)
+
+            if 'interval_minutes' in js:
+                js['trigger'] = 'interval'
+
+            elif 'start_time' in js:
+                js['trigger'] = 'start_time'
 
             if js['enabled']:
                 tarefasValidas.append(js)

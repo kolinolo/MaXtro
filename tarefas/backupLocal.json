@@ -1,0 +1,12 @@
+{
+
+  "tipo": "powershell",
+
+  "id": "BackupLocal",
+  "enabled": true,
+  "interval_minutes": 60,
+
+  "scriptPath": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\MaXtro\\scripts\\Local\\Backup.ps1"
+
+}
+

@@ -1,0 +1,2 @@
+echo $env:RESTIC_REPOSITORY
+echo $env:RESTIC_PASSWORD
