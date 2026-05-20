@@ -74,6 +74,7 @@ for ind in indices:
 
     print(f'{ind} -> {indices[ind]}')
 
+print("\n\n")
 scheduler.start()
 
 

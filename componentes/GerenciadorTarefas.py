@@ -1,8 +1,7 @@
 import os
 
 from componentes.utilitarios import diretorio,carregaJSON, verde, vermelho
-from componentes.Exceptions import NotJsonException, TarefaInvalida
-
+from componentes.Exceptions import NotJsonException, TarefaInvalida, IntervaloMalDefinido
 
 
 def verificaTipo(js):
@@ -44,7 +43,12 @@ def verificaTipo(js):
     elif interval and startTime:
         raise TarefaInvalida('Horário e intervalo de execução definidos ao mesmo tempo')
 
-    return True
+
+    if 'time_range'  in js:
+        if len(js['time_range']) != 13:
+            raise IntervaloMalDefinido(f"intervalo de {js['id']} mal definido ({js['time_range']})")
+
+
 
 
 
@@ -75,7 +79,7 @@ def montarTarefas() -> list:
 
             vermelho(f"{t} Não é um arquivo Json, tarefa sera ignorada")
 
-        except TarefaInvalida as e :
+        except TarefaInvalida or IntervaloMalDefinido as e:
             vermelho(f"{t} -> {e.mensagem}")
 
 

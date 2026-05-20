@@ -19,3 +19,8 @@ class ErroExecutandoPython(Exception):
 
         self.mensagem = mensagem
         self.infos = resultado
+
+
+class IntervaloMalDefinido(Exception):
+    def __init__(self, mensagem):
+        self.mensagem = mensagem
