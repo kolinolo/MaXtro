@@ -1,5 +1,5 @@
 import os, json
-
+from datetime import datetime
 from componentes.printTool import configColorizar
 from componentes.Exceptions import NotJsonException
 
@@ -31,5 +31,30 @@ def carregaJSON(caminho):
     with open(caminho, "rb") as file:
         return json.load(file)
 
+
+def inTimeRange(tarefa:dict)-> bool:
+
+    if 'time_range' not in tarefa:
+        return True
+
+    inicial = tarefa['time_range'].split(' - ')[0]
+    final = tarefa['time_range'].split(' - ')[1]
+
+    agora = datetime.now()
+    agora = agora.strftime("%H:%M")
+
+    if (agora > inicial) and (agora < final):
+        return True
+
+
+    else:
+        print(f"{tarefa['id']} Fora do periodo de execução")
+        return False
+
+
+
+
 verde = configColorizar('verde',autoPrint=True).colorizar
 vermelho = configColorizar('vermelho',autoPrint=True).colorizar
+
+

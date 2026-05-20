@@ -4,12 +4,13 @@
 
   "id": "GerenciadorPFX",
   "enabled": true,
-  "interval_minutes": 60,
+  "interval_minutes": 120,
   "python_path": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\GerenciadorPFX2\\.venv\\Scripts\\python.exe",
 
   "working_dir": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\GerenciadorPFX2",
 
-  "script": "main.py"
+  "script": "main.py",
+  "time_range": "08:00 - 18:00"
 
 }
 
