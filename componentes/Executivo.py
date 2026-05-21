@@ -1,13 +1,13 @@
 import subprocess
 from datetime import datetime
 
-from componentes.utilitarios import vermelho, verde, inTimeRange
+from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay
 
 
 def executarPython(tarefa):
 
-    if not inTimeRange(tarefa):
-        print(f'Tarefa fora do range de execução {tarefa["id"]}')
+    if not inTimeRange(tarefa) or not inDay(tarefa):
+        azul(f'Tarefa fora do range de execução {tarefa["id"]}')
 
         return
 
@@ -48,8 +48,8 @@ def executarPython(tarefa):
 
 def executaPowerShell(tarefa):
 
-    if not inTimeRange(tarefa):
-        print(f'Tarefa fora do range de execução {tarefa["id"]}')
+    if not inTimeRange(tarefa) or not inDay(tarefa):
+        azul(f'Tarefa fora do range de execução {tarefa["id"]}')
 
         return
 

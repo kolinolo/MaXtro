@@ -4,10 +4,14 @@
 
   "id": "BackupLocal",
   "enabled": true,
-  "interval_minutes": 1,
-  "time_range": "10:30 - 21:00",
-  "working_dir": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\MaXtro\\scripts\\Local\\",
-  "script": "Backup.ps1"
 
+
+  "working_dir": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\MaXtro\\scripts\\Local\\",
+  "script": "Backup.ps1",
+
+
+  "interval_minutes": 120,
+  "day_of_week":"mon-fri",
+  "time_range": "10:30 - 21:00"
 }
 

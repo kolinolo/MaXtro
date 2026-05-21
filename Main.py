@@ -4,8 +4,22 @@ from componentes.Executivo import executarPython, executaPowerShell
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from os import system
-
 from dotenv import load_dotenv
+
+
+import sys
+
+if sys.platform == "win32":
+    import ctypes
+    kernel32 = ctypes.windll.kernel32
+    # Desativa o QuickEdit Mode (0x0040) no terminal atual
+    # noinspection PyUnresolvedReferences
+    kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), 0x0080 | 0x0008)
+
+
+
+
+timezone='America/Sao_Paulo'
 
 
 

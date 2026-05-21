@@ -1,7 +1,7 @@
 import os
 
-from componentes.utilitarios import diretorio,carregaJSON, verde, vermelho
-from componentes.Exceptions import NotJsonException, TarefaInvalida, IntervaloMalDefinido
+from componentes.utilitarios import diretorio,carregaJSON, verde, vermelho, dias
+from componentes.Exceptions import NotJsonException, TarefaInvalida, IntervaloMalDefinido, DiaMalDefinido
 
 
 def verificaTipo(js):
@@ -49,8 +49,18 @@ def verificaTipo(js):
             raise IntervaloMalDefinido(f"intervalo de {js['id']} mal definido ({js['time_range']})")
 
 
+    if 'day_of_week' in js:
+        diasSemana = []
+        if '-' in js['day_of_week']:
 
+            diasSemana = js['day_of_week'].split('-')
 
+        else:
+            diasSemana.append(js['day_of_week'])
+
+        for dia in diasSemana:
+            if dia not in dias:
+                raise DiaMalDefinido(js['day_of_week'])
 
 
 
@@ -79,9 +89,14 @@ def montarTarefas() -> list:
 
             vermelho(f"{t} Não é um arquivo Json, tarefa sera ignorada")
 
-        except TarefaInvalida or IntervaloMalDefinido as e:
-            vermelho(f"{t} -> {e.mensagem}")
+        except IntervaloMalDefinido as e:
+            vermelho(f"{t} -> {e.mensagem}\n")
 
+        except  DiaMalDefinido as e:
+            vermelho(f"{t} -> {e.mensagem}\n")
+
+        except  TarefaInvalida as e:
+            vermelho(f"{t} -> {e.mensagem}\n")
 
 
 

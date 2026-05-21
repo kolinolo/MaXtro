@@ -4,6 +4,19 @@ from componentes.printTool import configColorizar
 from componentes.Exceptions import NotJsonException
 
 
+dias = {
+
+    'mon':0,
+    'tue':1,
+    'wed':2,
+    'thu':3,
+    'fri':4,
+    'sat':5,
+    'sun':6,
+
+}
+
+
 def diretorio(caminho, cwd = True) -> str:
 
     """ converte o caminho para padrão linux ou windows e coloca o CWD como prefixo """
@@ -43,7 +56,7 @@ def inTimeRange(tarefa:dict)-> bool:
     agora = datetime.now()
     agora = agora.strftime("%H:%M")
 
-    if (agora > inicial) and (agora < final):
+    if (agora >= inicial) and (agora <= final):
         return True
 
 
@@ -51,10 +64,44 @@ def inTimeRange(tarefa:dict)-> bool:
         print(f"{tarefa['id']} Fora do periodo de execução")
         return False
 
+def inDay(tarefa:dict)-> bool:
+
+    if 'day_of_week' not in tarefa:
+        return True
+
+    if '-' in tarefa['day_of_week']:
+        inicial = tarefa['day_of_week'].split('-')[0]
+        final = tarefa['day_of_week'].split('-')[1]
+
+    else:
+        inicial = tarefa['day_of_week']
+        final = tarefa['day_of_week']
+
+
+
+
+    inicial = dias[inicial]
+    final = dias[final]
+
+
+
+
+    agora = datetime.now()
+    agora = agora.weekday()
+
+    if (agora >= inicial) and (agora <= final):
+        return True
+
+    else:
+
+        return False
+
+
 
 
 
 verde = configColorizar('verde',autoPrint=True).colorizar
 vermelho = configColorizar('vermelho',autoPrint=True).colorizar
+azul = configColorizar('azul',autoPrint=True).colorizar
 
 
