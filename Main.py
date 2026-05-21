@@ -78,6 +78,11 @@ for tarefa in tarefas:
             indices[tarefa['id']] = (f'A cada {tarefa['interval_minutes']}' +
                                      (' minutos' if tarefa['interval_minutes'] > 1 else ' minuto'))
 
+
+        case('cron'):
+
+
+
         case _:
             print('Trigger não definido')
 

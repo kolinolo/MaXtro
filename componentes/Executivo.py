@@ -4,6 +4,10 @@ from datetime import datetime
 from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay
 
 
+
+
+
+
 def executarPython(tarefa):
 
     if not inTimeRange(tarefa) or not inDay(tarefa):
@@ -14,9 +18,10 @@ def executarPython(tarefa):
     inicio = datetime.now()
 
     print(f'Executando {tarefa['id']}')
-    resultado = subprocess.run(
-        [tarefa['python_path'], tarefa['script']],
 
+    resultado = subprocess.run(
+        [tarefa['python_path'],
+        tarefa['script']],
         cwd=tarefa['working_dir'],
 
         capture_output=True,
@@ -92,3 +97,32 @@ def executaPowerShell(tarefa):
         print(retorno['stdout'])
 
     return
+
+
+
+
+#def executar(tarefa):
+#
+#
+#    if tarefa['tipo'] == 'python':
+#
+#        parametros = {
+#            'execInfo' :
+#        [tarefa['python_path'],
+#         tarefa['script']],
+#        'cwd' : tarefa['working_dir'],
+#        'capture_output' : True,
+#        'text' : True,
+#        'errors' : 'replace',
+#        'encoding' : 'utf-8'
+#        }
+#
+#    if not inTimeRange(tarefa) or not inDay(tarefa):
+#        azul(f'Tarefa fora do range de execução {tarefa["id"]}')
+#
+#        return
+#
+#    inicio = datetime.now()
+
+    print(f"Executando  {tarefa['id']} ({tarefa['tipo']})")
+
