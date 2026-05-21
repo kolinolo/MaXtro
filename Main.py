@@ -1,7 +1,8 @@
+
+""" Função principal, responsável por interpretar e configurar o quando executar uma tarefa """
+
 from componentes.GerenciadorTarefas import montarTarefas
 from componentes.Executivo import executar
-
-
 from apscheduler.schedulers.blocking import BlockingScheduler
 from os import system
 from dotenv import load_dotenv
@@ -45,7 +46,6 @@ for tarefa in tarefas:
 
         case('interval'):
 
-
             scheduler.add_job(
                 executar,
                 'interval',
@@ -59,15 +59,37 @@ for tarefa in tarefas:
                 max_instances=1
             )
 
-
-
-
             indices[tarefa['id']] = (f'A cada {tarefa['interval_minutes']}' +
                                      (' minutos' if tarefa['interval_minutes'] > 1 else ' minuto'))
 
 
         case('cron'):
-            pass
+
+            num = -1
+            for horario in tarefa['start_time']:
+
+                num = num + 1
+
+                horas = horario.split(':')[0]
+                minutos = horario.split(':')[1]
+
+                scheduler.add_job(
+                    executar,
+                    'cron',
+
+                    hour=horas,
+                    minute=minutos,
+
+                    args=[tarefa],
+
+                    id=f"{tarefa['id']}{num}",
+
+                    max_instances=1
+                )
+            indices[tarefa['id']] = tarefa['start_time']
+
+
+
 
 
         case _:

@@ -26,6 +26,14 @@ class IntervaloMalDefinido(Exception):
     def __init__(self, mensagem):
         self.mensagem = mensagem
 
+
+
+class StartTimeMalDefinido(Exception):
+    def __init__(self, mensagem):
+        self.mensagem = mensagem
+
+
+
 class DiaMalDefinido (Exception):
 
     def __init__(self, atual):

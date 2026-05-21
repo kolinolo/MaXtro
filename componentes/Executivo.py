@@ -5,7 +5,7 @@ from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay
 
 
 def executar(tarefa):
-
+    """ Define os parâmetros e executa a função """
 
     inicio = datetime.now()
     execInfo = []

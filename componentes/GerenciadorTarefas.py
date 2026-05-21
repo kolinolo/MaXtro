@@ -1,7 +1,8 @@
 import os
 
 from componentes.utilitarios import diretorio,carregaJSON, verde, vermelho, dias
-from componentes.Exceptions import NotJsonException, TarefaInvalida, IntervaloMalDefinido, DiaMalDefinido
+from componentes.Exceptions import NotJsonException, TarefaInvalida, IntervaloMalDefinido, DiaMalDefinido, \
+    StartTimeMalDefinido
 
 
 def verificaTipo(js):
@@ -62,6 +63,24 @@ def verificaTipo(js):
             if dia not in dias:
                 raise DiaMalDefinido(js['day_of_week'])
 
+    if 'start_time' in js:
+
+        if len(js['start_time']) == 0: raise StartTimeMalDefinido('O start_time esta vasil')
+
+        for horario in js['start_time']:
+
+            if len(horario) != 5:
+                raise StartTimeMalDefinido(f'Os tempos do stat_time devem estar separados por "," e no formato HH:MM, atual {horario}')
+
+            horas = horario.split(':')[0]
+            minutos = horario.split(':')[1]
+
+            if horas > '23': raise StartTimeMalDefinido(f'{horas} Não é uma hora valida')
+
+            if minutos > '59': raise StartTimeMalDefinido(f'{minutos} Não é um minuto valido')
+
+
+
 
 
 def montarTarefas() -> list:
@@ -80,7 +99,7 @@ def montarTarefas() -> list:
                 js['trigger'] = 'interval'
 
             elif 'start_time' in js:
-                js['trigger'] = 'start_time'
+                js['trigger'] = 'cron'
 
             if js['enabled']:
                 tarefasValidas.append(js)
