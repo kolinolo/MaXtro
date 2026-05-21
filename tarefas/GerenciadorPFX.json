@@ -11,9 +11,9 @@
 
   "script": "main.py",
 
-  "interval_minutes": 120,
+  "interval_minutes": 1,
   "time_range": "08:00 - 18:00",
-  "day_of_week":"mon-tue"
+  "day_of_week":"mon-fri"
 
 }
 

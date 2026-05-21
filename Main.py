@@ -1,5 +1,5 @@
 from componentes.GerenciadorTarefas import montarTarefas
-from componentes.Executivo import executarPython, executaPowerShell
+from componentes.Executivo import executar
 
 
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -45,34 +45,21 @@ for tarefa in tarefas:
 
         case('interval'):
 
-            if tarefa['tipo'] == 'python':
-                scheduler.add_job(
-                    executarPython,
-                    'interval',
 
-                    minutes=tarefa['interval_minutes'],
+            scheduler.add_job(
+                executar,
+                'interval',
 
-                    args=[tarefa],
+                minutes=tarefa['interval_minutes'],
 
-                    id=tarefa['id'],
+                args=[tarefa],
 
-                    max_instances=1
-                )
+                id=tarefa['id'],
 
-            elif tarefa['tipo'] == 'powershell':
+                max_instances=1
+            )
 
-                scheduler.add_job(
-                    executaPowerShell,
-                    'interval',
 
-                    minutes=tarefa['interval_minutes'],
-
-                    args=[tarefa],
-
-                    id=tarefa['id'],
-
-                    max_instances=1
-                )
 
 
             indices[tarefa['id']] = (f'A cada {tarefa['interval_minutes']}' +
@@ -80,7 +67,7 @@ for tarefa in tarefas:
 
 
         case('cron'):
-
+            pass
 
 
         case _:
