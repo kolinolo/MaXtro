@@ -1,2 +1,4 @@
-echo $env:RESTIC_REPOSITORY
-echo $env:RESTIC_PASSWORD
+Write-Output $env:RESTIC_REPOSITORY
+Write-Output $env:RESTIC_PASSWORD
+exit $LASTEXITCODE
+ras

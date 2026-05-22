@@ -10,7 +10,7 @@
   "script": "Backup.ps1",
 
 
-  "interval_minutes": 120,
+  "interval_minutes": 1,
   "day_of_week":"mon-fri",
   "time_range": "10:30 - 21:00"
 }

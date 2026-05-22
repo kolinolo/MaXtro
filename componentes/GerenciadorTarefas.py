@@ -1,4 +1,5 @@
 import os
+from json import JSONDecodeError
 
 from componentes.utilitarios import diretorio,carregaJSON, verde, vermelho, dias
 from componentes.Exceptions import NotJsonException, TarefaInvalida, IntervaloMalDefinido, DiaMalDefinido, \
@@ -107,6 +108,10 @@ def montarTarefas() -> list:
         except  NotJsonException:
 
             vermelho(f"{t} Não é um arquivo Json, tarefa sera ignorada")
+
+        except JSONDecodeError as e:
+            vermelho(f"{t} -> Erro na decodificação do Json")
+
 
         except IntervaloMalDefinido as e:
             vermelho(f"{t} -> {e.mensagem}\n")

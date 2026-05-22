@@ -6,7 +6,7 @@ from componentes.Executivo import executar
 from apscheduler.schedulers.blocking import BlockingScheduler
 from os import system
 from dotenv import load_dotenv
-
+from datetime import datetime
 
 import sys
 
@@ -84,7 +84,9 @@ for tarefa in tarefas:
 
                     id=f"{tarefa['id']}{num}",
 
-                    max_instances=1
+                    max_instances=1,
+
+                    timezone= 'America/Sao_Paulo'
                 )
             indices[tarefa['id']] = tarefa['start_time']
 
@@ -96,7 +98,8 @@ for tarefa in tarefas:
             print('Trigger não definido')
 
 
-print("iniciando MaXtro\n")
+print(f"iniciando MaXtro {datetime.now()}\n")
+
 
 for ind in indices:
 

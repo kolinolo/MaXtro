@@ -13,7 +13,7 @@ def executar(tarefa):
 
 
     if not inTimeRange(tarefa) or not inDay(tarefa):
-        azul(f'Tarefa fora do range de execução {tarefa["id"]}')
+        azul(f'skip {tarefa["id"]}')
         return
 
     if tarefa['tipo'] == 'python':
@@ -28,7 +28,8 @@ def executar(tarefa):
         'capture_output' : True,
         'text' : True,
         'errors' : 'replace',
-        'encoding' : 'utf-8'
+        'encoding' : 'UTF-8',
+
 
         }
 
@@ -46,13 +47,14 @@ def executar(tarefa):
         'cwd' : tarefa['working_dir'],
         'capture_output' : True,
         'text' : True,
-        'encoding' : 'cp1252'
+        'encoding' : 'UTF-8',
+
         }
 
-
+    print(f"Executando  {tarefa['id']} ({tarefa['tipo']})")
     resultado = subprocess.run(execInfo,**parametros)
 
-    print(f"Executando  {tarefa['id']} ({tarefa['tipo']})")
+
 
 
     fim = datetime.now()
@@ -66,12 +68,16 @@ def executar(tarefa):
         'sucesso': resultado.returncode == 0
     }
 
-    if retorno['returncode'] != 0:
+
+
+    if retorno['returncode'] == 1:
         vermelho(f"Erro na execução de {tarefa['id']}")
+        vermelho(f"stderr {retorno['stderr']}")
+        vermelho(f"returncode {retorno['returncode']}")
 
     else:
         verde(f"{tarefa['id']} Executado com sucesso {fim}")
-
+        verde(f"returncode {retorno['returncode']}")
         print(retorno['stdout'])
 
     return
