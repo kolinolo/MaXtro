@@ -3,10 +3,36 @@ from datetime import datetime, timezone
 from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay, diretorio
 import DbLabs
 from zoneinfo import ZoneInfo
+import os
 
 bp = DbLabs.buscaPostgres()
 
 tz = ZoneInfo('America/Sao_Paulo')
+
+def newLog(retorno):
+
+    tarefa = retorno['tarefa']
+
+
+    os.makedirs(diretorio(f"/Logs/{tarefa['id']}"), exist_ok=True)
+
+    caminho = diretorio(f"/Logs/{tarefa['id']}/{retorno['logID']}.txt")
+
+    with open(caminho, "x") as file:
+
+        fileText = f"""
+{tarefa['id']}
+{retorno['inicio']}
+{retorno['fim']}
+==============================
+\n
+{retorno['stdout']}
+        """
+
+        file.write(fileText)
+
+
+
 
 def executar(tarefa):
     """ Define os parâmetros e executa a função """
@@ -69,7 +95,9 @@ def executar(tarefa):
         'stderr': resultado.stderr,
         'inicio': inicio.replace(microsecond=0),
         'fim': fim.replace(microsecond=0),
-        'sucesso': resultado.returncode == 0
+        'sucesso': resultado.returncode == 0,
+        'tarefa': tarefa,
+        'logID': inicio.strftime('%Y-%m-%d %H%M')
     }
 
 
@@ -87,10 +115,6 @@ def executar(tarefa):
 
     try:
 
-
-        logID = inicio.strftime('%Y-%m-%d %H%M')
-        caminho = diretorio(f"/Logs/{tarefa['id']}/{logID}")
-
         sql = f""" insert into mx_exec values (
             
                             {bp.lastID('mx_exec') + 1},
@@ -101,12 +125,14 @@ def executar(tarefa):
                             {retorno['sucesso']},
                             '{retorno['inicio']}',
                             '{retorno['fim']}',
-                            '{logID}',
+                            '{retorno['logID']}',
                             '{retorno['fim']}'
                             );
 """
 
         bp.executaComando(sql)
+        newLog(retorno)
+
 
 
     except Exception as e:

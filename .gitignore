@@ -35,5 +35,7 @@ Thumbs.db
 # Sqlite
 .instance/
 
+/Logs
+
 # -- Envoriments --
 *.env

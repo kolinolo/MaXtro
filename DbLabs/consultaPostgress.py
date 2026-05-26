@@ -126,4 +126,5 @@ def lastID(tabela:str,coluna:str ='id'):
 
     df = querryToDFPG(f'select {coluna} from {tabela}')
 
-    return df[coluna].max()
+
+    return df[coluna].max() if len(df[coluna]) > 0 else 1
