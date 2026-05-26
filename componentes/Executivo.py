@@ -1,13 +1,17 @@
 import subprocess
-from datetime import datetime
+from datetime import datetime, timezone
+from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay, diretorio
+import DbLabs
+from zoneinfo import ZoneInfo
 
-from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay
+bp = DbLabs.buscaPostgres()
 
+tz = ZoneInfo('America/Sao_Paulo')
 
 def executar(tarefa):
     """ Define os parâmetros e executa a função """
 
-    inicio = datetime.now()
+    inicio = datetime.now(tz)
     execInfo = []
     parametros = {}
 
@@ -57,14 +61,14 @@ def executar(tarefa):
 
 
 
-    fim = datetime.now()
+    fim = datetime.now(tz)
 
     retorno = {
         'returncode': resultado.returncode,
         'stdout': resultado.stdout,
         'stderr': resultado.stderr,
-        'inicio': inicio,
-        'fim': fim,
+        'inicio': inicio.replace(microsecond=0),
+        'fim': fim.replace(microsecond=0),
         'sucesso': resultado.returncode == 0
     }
 
@@ -79,6 +83,37 @@ def executar(tarefa):
         verde(f"{tarefa['id']} Executado com sucesso {fim}")
         verde(f"returncode {retorno['returncode']}")
         print(retorno['stdout'])
+
+
+    try:
+
+
+        logID = inicio.strftime('%Y-%m-%d %H%M')
+        caminho = diretorio(f"/Logs/{tarefa['id']}/{logID}")
+
+        sql = f""" insert into mx_exec values (
+            
+                            {bp.lastID('mx_exec') + 1},
+                            '{tarefa['id']}',
+                           '{tarefa['tipo']}',
+                            {retorno['returncode']},
+                            {retorno['stderr'] if retorno['stderr'] != "" else 0},
+                            {retorno['sucesso']},
+                            '{retorno['inicio']}',
+                            '{retorno['fim']}',
+                            '{logID}',
+                            '{retorno['fim']}'
+                            );
+"""
+
+        bp.executaComando(sql)
+
+
+    except Exception as e:
+
+        print(f"exceção ao logar {e}")
+
+
 
     return
 

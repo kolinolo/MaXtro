@@ -1,13 +1,19 @@
 
 """ Função principal, responsável por interpretar e configurar o quando executar uma tarefa """
 
+
+from dotenv import load_dotenv
+load_dotenv(r"MaXtro.env")
+
+
 from componentes.GerenciadorTarefas import montarTarefas
-from componentes.Executivo import executar
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 from os import system
-from dotenv import load_dotenv
+
 from datetime import datetime
 
+from componentes.Executivo import executar
 import sys
 
 if sys.platform == "win32":
@@ -24,7 +30,6 @@ timezone='America/Sao_Paulo'
 
 
 
-load_dotenv(r"MaXtro.env")
 
 
 system('cls')
