@@ -1,4 +1,5 @@
 import os, json
+import re
 from datetime import datetime
 from componentes.printTool import configColorizar
 from componentes.Exceptions import NotJsonException
@@ -96,7 +97,14 @@ def inDay(tarefa:dict)-> bool:
 
         return False
 
+def limparStdout(std):
 
+
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    texto_limpo = ansi_escape.sub('', std)
+    texto_limpo = texto_limpo.replace('\ufffd', '[ERRO_CHAR]')
+
+    return texto_limpo
 
 
 

@@ -1,6 +1,6 @@
 import subprocess
 from datetime import datetime, timezone
-from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay, diretorio
+from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay, diretorio, limparStdout
 import DbLabs
 from zoneinfo import ZoneInfo
 import os
@@ -16,9 +16,9 @@ def newLog(retorno):
 
     os.makedirs(diretorio(f"/Logs/{tarefa['id']}"), exist_ok=True)
 
-    caminho = diretorio(f"/Logs/{tarefa['id']}/{retorno['logID']}.txt")
+    caminho = diretorio(f"/Logs/{tarefa['id']}/{retorno['logID']}.log")
 
-    with open(caminho, "x") as file:
+    with open(caminho, "x", encoding="utf-8") as file:
 
         fileText = f"""
 {tarefa['id']}
@@ -26,7 +26,7 @@ def newLog(retorno):
 {retorno['fim']}
 ==============================
 \n
-{retorno['stdout']}
+{limparStdout(retorno['stdout'])}
         """
 
         file.write(fileText)
@@ -102,7 +102,7 @@ def executar(tarefa):
 
 
 
-    if retorno['returncode'] == 1:
+    if retorno['returncode'] not in (0,3):
         vermelho(f"Erro na execução de {tarefa['id']}")
         vermelho(f"stderr {retorno['stderr']}")
         vermelho(f"returncode {retorno['returncode']}")
@@ -110,8 +110,6 @@ def executar(tarefa):
     else:
         verde(f"{tarefa['id']} Executado com sucesso {fim}")
         verde(f"returncode {retorno['returncode']}")
-        print(retorno['stdout'])
-
 
     try:
 
@@ -121,7 +119,7 @@ def executar(tarefa):
                             '{tarefa['id']}',
                            '{tarefa['tipo']}',
                             {retorno['returncode']},
-                            {retorno['stderr'] if retorno['stderr'] != "" else 0},
+                            0,
                             {retorno['sucesso']},
                             '{retorno['inicio']}',
                             '{retorno['fim']}',
@@ -131,15 +129,12 @@ def executar(tarefa):
 """
 
         bp.executaComando(sql)
-        newLog(retorno)
-
-
 
     except Exception as e:
 
-        print(f"exceção ao logar {e}")
+        vermelho(f'Não foi possível salvar no banco de dados\n {e}')
 
-
+    newLog(retorno)
 
     return
 

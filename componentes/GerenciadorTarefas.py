@@ -73,6 +73,8 @@ def verificaTipo(js):
             if len(horario) != 5:
                 raise StartTimeMalDefinido(f'Os tempos do stat_time devem estar separados por "," e no formato HH:MM, atual {horario}')
 
+            if len(horario.split(':')) != 2: raise StartTimeMalDefinido(f'{horario} Não é um horário valido')
+
             horas = horario.split(':')[0]
             minutos = horario.split(':')[1]
 
@@ -120,6 +122,10 @@ def montarTarefas() -> list:
             vermelho(f"{t} -> {e.mensagem}\n")
 
         except  TarefaInvalida as e:
+            vermelho(f"{t} -> {e.mensagem}\n")
+
+
+        except  StartTimeMalDefinido as e:
             vermelho(f"{t} -> {e.mensagem}\n")
 
 
