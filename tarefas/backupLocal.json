@@ -6,7 +6,7 @@
   "enabled": true,
 
 
-  "working_dir": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\MaXtro\\scripts\\Local\\",
+  "working_dir": "/opt/MaXtro/scripts/local",
   "script": "Backup.ps1",
 
 

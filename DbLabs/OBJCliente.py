@@ -3,7 +3,7 @@ from pathlib import Path
 
 naturezas = ["Simples Nacional",
              "Lucro Real",
-             "lucro Presumido"]
+             "Lucro Presumido"]
 
 pastas = {}
 

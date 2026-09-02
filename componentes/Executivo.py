@@ -1,9 +1,10 @@
 import subprocess
-from datetime import datetime, timezone
-from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay, diretorio, limparStdout
+from datetime import datetime
+from pathlib import Path
+
+from componentes.utilitarios import vermelho, verde, inTimeRange, azul, inDay, limparStdout
 import DbLabs
 from zoneinfo import ZoneInfo
-import os
 
 bp = DbLabs.buscaPostgres()
 
@@ -14,11 +15,11 @@ def newLog(retorno):
     tarefa = retorno['tarefa']
 
 
-    os.makedirs(diretorio(f"/Logs/{tarefa['id']}"), exist_ok=True)
+    Path(f"/Logs/{tarefa['id']}").mkdir(exist_ok=True)
 
-    caminho = diretorio(f"/Logs/{tarefa['id']}/{retorno['logID']}.log")
+    caminho = f"/Logs/{tarefa['id']}/{retorno['logID']}.log"
 
-    with open(caminho, "x", encoding="utf-8") as file:
+    with open(Path(caminho), "x", encoding="utf-8") as file:
 
         fileText = f"""
 {tarefa['id']}

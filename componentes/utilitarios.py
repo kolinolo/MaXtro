@@ -1,6 +1,8 @@
 import os, json
 import re
 from datetime import datetime
+from pathlib import Path
+
 from componentes.printTool import configColorizar
 from componentes.Exceptions import NotJsonException
 
@@ -42,7 +44,7 @@ def carregaJSON(caminho):
     if not caminho.endswith(".json"):
         raise NotJsonException()
 
-    with open(caminho, "rb") as file:
+    with open(Path(caminho), "rb") as file:
         return json.load(file)
 
 

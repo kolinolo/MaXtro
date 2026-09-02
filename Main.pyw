@@ -7,10 +7,10 @@ load_dotenv(r".env")
 from componentes.GerenciadorTarefas import montarTarefas
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-from os import system
+
 from datetime import datetime
 from componentes.Executivo import executar
-import sys
+
 
 # Alteração 2: Importações necessárias para o pystray
 #import pystray

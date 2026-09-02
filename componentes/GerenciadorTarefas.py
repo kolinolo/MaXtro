@@ -97,7 +97,7 @@ def montarTarefas() -> list:
     for t in tarefas:
         try:
 
-            js = carregaJSON(Path(fr"tarefas\{t}"))
+            js = carregaJSON(fr"./tarefas/{t}")
 
             verificaTipo(js)
 
