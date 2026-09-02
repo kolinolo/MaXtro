@@ -3,7 +3,7 @@
   "tipo": "python",
 
   "id": "GerenciadorPFX",
-  "enabled": true,
+  "enabled": false,
 
   "python_path": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\GerenciadorPFX2\\.venv\\Scripts\\python.exe",
 

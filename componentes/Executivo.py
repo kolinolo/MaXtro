@@ -15,9 +15,9 @@ def newLog(retorno):
     tarefa = retorno['tarefa']
 
 
-    Path(f"/Logs/{tarefa['id']}").mkdir(exist_ok=True)
+    Path(f"Logs/{tarefa['id']}").mkdir(exist_ok=True)
 
-    caminho = f"/Logs/{tarefa['id']}/{retorno['logID']}.log"
+    caminho = f"Logs/{tarefa['id']}/{retorno['logID']}.log"
 
     with open(Path(caminho), "x", encoding="utf-8") as file:
 
@@ -47,40 +47,54 @@ def executar(tarefa):
         azul(f'skip {tarefa["id"]}')
         return
 
-    if tarefa['tipo'] == 'python':
+    match tarefa['tipo']:
+
+        case 'python':
+
+            execInfo =[tarefa['python_path'],
+             tarefa['script']]
+
+            parametros = {
+
+            'cwd' : tarefa['working_dir'],
+            'capture_output' : True,
+            'text' : True,
+            'errors' : 'replace',
+            'encoding' : 'UTF-8',
 
 
-        execInfo =[tarefa['python_path'],
-         tarefa['script']]
+            }
 
-        parametros = {
+        case 'powershell':
 
-        'cwd' : tarefa['working_dir'],
-        'capture_output' : True,
-        'text' : True,
-        'errors' : 'replace',
-        'encoding' : 'UTF-8',
+            execInfo =[
 
-
-        }
-
-    elif tarefa['tipo'] == 'powershell':
-
-        execInfo =[
-
-            "powershell",
-            "-ExecutionPolicy", "Bypass",
-            "-File", tarefa['script']
-        ]
+                'powershell',
+                "-ExecutionPolicy", "Bypass",
+                "-File", tarefa['script']
+            ]
 
 
-        parametros = {
-        'cwd' : tarefa['working_dir'],
-        'capture_output' : True,
-        'text' : True,
-        'encoding' : 'UTF-8',
+            parametros = {
+            'cwd' : tarefa['working_dir'],
+            'capture_output' : True,
+            'text' : True,
+            'encoding' : 'UTF-8',
 
-        }
+            }
+        case 'bash':
+
+            execInfo = [
+
+                 tarefa['script']
+            ]
+
+            parametros = {
+                'cwd': tarefa['working_dir'],
+            'capture_output' : True,
+            'text' : True
+
+            }
 
     print(f"Executando  {tarefa['id']} ({tarefa['tipo']})")
     resultado = subprocess.run(execInfo,**parametros)

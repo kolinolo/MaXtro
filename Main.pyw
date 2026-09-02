@@ -11,20 +11,6 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 from componentes.Executivo import executar
 
-
-# Alteração 2: Importações necessárias para o pystray
-#import pystray
-#from PIL import Image, ImageDraw
-#from pystray import MenuItem as item
-#
-#if sys.platform == "win32":
-#    import ctypes
-#
-#    kernel32 = ctypes.windll.kernel32
-#    # Desativa o QuickEdit Mode (0x0040) no terminal atual
-#    # noinspection PyUnresolvedReferences
-#    kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), 0x0080 | 0x0008)
-
 timezone = 'America/Sao_Paulo'
 
 

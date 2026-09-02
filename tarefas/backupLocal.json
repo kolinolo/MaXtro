@@ -1,16 +1,16 @@
 {
 
-  "tipo": "powershell",
+  "tipo": "bash",
 
   "id": "BackupLocal",
   "enabled": true,
 
 
-  "working_dir": "/opt/MaXtro/scripts/local",
-  "script": "Backup.ps1",
+  "working_dir": "/opt/MaXtro/scripts/",
+  "script": "/opt/MaXtro/scripts/Backup.sh",
 
 
-  "interval_minutes": 60,
+  "interval_minutes": 1,
   "day_of_week":"mon-fri",
   "time_range": "10:30 - 21:00"
 }

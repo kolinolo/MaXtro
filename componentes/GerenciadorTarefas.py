@@ -21,7 +21,7 @@ def verificaTipo(js):
 
             exigido = ['id', 'enabled', 'working_dir','script']
 
-        case 'sh':
+        case 'bash':
 
             exigido = ['id', 'enabled', 'working_dir','script']
 
