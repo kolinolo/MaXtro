@@ -1,7 +1,7 @@
 import os
 from json import JSONDecodeError
-
-from componentes.utilitarios import diretorio,carregaJSON, verde, vermelho, dias
+from pathlib import Path
+from componentes.utilitarios import carregaJSON, verde, vermelho, dias
 from componentes.Exceptions import NotJsonException, TarefaInvalida, IntervaloMalDefinido, DiaMalDefinido, \
     StartTimeMalDefinido
 
@@ -17,9 +17,11 @@ def verificaTipo(js):
 
             exigido = ['id','enabled','python_path','working_dir','script']
 
-
-
         case 'powershell':
+
+            exigido = ['id', 'enabled', 'working_dir','script']
+
+        case 'sh':
 
             exigido = ['id', 'enabled', 'working_dir','script']
 
@@ -87,14 +89,15 @@ def verificaTipo(js):
 
 
 def montarTarefas() -> list:
+
     tarefasValidas = []
 
-    tarefas = os.listdir(diretorio('tarefas'))
+    tarefas = [p.name for p in  Path(fr"./tarefas").iterdir()]
 
     for t in tarefas:
         try:
 
-            js = carregaJSON(diretorio(fr"tarefas\{t}"))
+            js = carregaJSON(Path(fr"tarefas\{t}"))
 
             verificaTipo(js)
 

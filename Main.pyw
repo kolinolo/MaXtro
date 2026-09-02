@@ -2,28 +2,28 @@
 
 from dotenv import load_dotenv
 
-load_dotenv(r"MaXtro.env")
+load_dotenv(r".env")
 
 from componentes.GerenciadorTarefas import montarTarefas
-# Alteração 1: Mudança para o BackgroundScheduler
-from apscheduler.schedulers.background import BackgroundScheduler
+
+from apscheduler.schedulers.blocking import BlockingScheduler
 from os import system
 from datetime import datetime
 from componentes.Executivo import executar
 import sys
 
 # Alteração 2: Importações necessárias para o pystray
-import pystray
-from PIL import Image, ImageDraw
-from pystray import MenuItem as item
-
-if sys.platform == "win32":
-    import ctypes
-
-    kernel32 = ctypes.windll.kernel32
-    # Desativa o QuickEdit Mode (0x0040) no terminal atual
-    # noinspection PyUnresolvedReferences
-    kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), 0x0080 | 0x0008)
+#import pystray
+#from PIL import Image, ImageDraw
+#from pystray import MenuItem as item
+#
+#if sys.platform == "win32":
+#    import ctypes
+#
+#    kernel32 = ctypes.windll.kernel32
+#    # Desativa o QuickEdit Mode (0x0040) no terminal atual
+#    # noinspection PyUnresolvedReferences
+#    kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), 0x0080 | 0x0008)
 
 timezone = 'America/Sao_Paulo'
 
@@ -78,41 +78,17 @@ class Orquestra:
         for ind in indices:
             print(f'{ind} -> {indices[ind]}')
 
-        print("\nO MaXtro está rodando em segundo plano. Verifique a bandeja do sistema.\n")
+        print("\nO MaXtro está rodando\n")
 
-    # Alteração 3: Função para gerar um ícone temporário (caso não tenha uma imagem)
-    def criar_icone(self):
-        # Cria uma imagem 64x64 simples com as letras "MX"
-        image = Image.new('RGB', (64, 64), color=(41, 53, 65))
-        d = ImageDraw.Draw(image)
-        d.text((15, 25), "MX", fill=(255, 255, 255))
-        return image
 
-    # Alteração 4: Função para encerrar o programa corretamente pelo menu
-    def parar_maxtro(self, icon, item):
-        print("Encerrando agendador e saindo...")
-        if self.scheduler:
-            self.scheduler.shutdown()
-        icon.stop()
 
     def iniciar(self):
-        system('cls')
 
-        # Inicializa e inicia o agendador em BACKGROUND (não bloqueia mais o código aqui)
-        self.scheduler = BackgroundScheduler(timezone=timezone)
+        self.scheduler = BlockingScheduler(timezone=timezone)
         self.constroiProcessos()
         self.scheduler.start()
 
-        # Configura o menu interativo do Tray Icon
-        menu = pystray.Menu(
-            item('Sair', self.parar_maxtro)
-        )
 
-        # Cria a instância do ícone (Nome interno, Imagem, Texto ao passar o mouse, Menu)
-        self.icon = pystray.Icon("MaXtro", self.criar_icone(), "MaXtro Agendador", menu)
-
-        # Roda o ícone (Este comando bloqueia a thread principal e mantém o app vivo)
-        self.icon.run()
 
 
 if __name__ == "__main__":

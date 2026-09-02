@@ -1,11 +1,17 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-
+from .exceptions import EnvironmentNotSetError
+from dotenv import load_dotenv
 
 import os
 
+if '.env' not in os.listdir(os.getcwd()):
+    print('O ambiente do Dblabs NÃO foi setado')
 
+    raise EnvironmentNotSetError(os.getcwd())
+
+load_dotenv(r".env")
 
 UID = os.getenv('UIDPG')
 PWD = str(os.getenv('PWDPG'))
@@ -59,9 +65,8 @@ def querryToDFPG(query: str, bd=''):
     return retorno
 
 
-def executaComando(sql, bd=''):
-
-    if bd != '' :
+def executaComando(sql, bd=None):
+    if bd != '':
 
         localEngine = create_engine(f'{conexao}/{bd}')
 
@@ -120,11 +125,11 @@ def appendDF(tabela,df,  bd='', unique=False):
 
     session.close()
 
-
-def lastID(tabela:str,coluna:str ='id'):
+def lastID(tabela:str,coluna:str ='id', bd=''):
     """Retorna o maior valor de uma coluna, usado para auto incrementar"""
 
-    df = querryToDFPG(f'select {coluna} from {tabela}')
+    df = querryToDFPG(f'select {coluna} from {tabela}',bd=bd)
+
+    return df[coluna].max()
 
 
-    return df[coluna].max() if len(df[coluna]) > 0 else 1

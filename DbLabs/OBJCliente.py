@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 naturezas = ["Simples Nacional",
              "Lucro Real",
@@ -7,31 +8,17 @@ naturezas = ["Simples Nacional",
 pastas = {}
 
 
-if os.name == "nt":
-    host = r"\\servidor\Ethos"
-else:
-    host = r"/mnt/win"
 
-
-def getCaminho(caminho):
-
-    if os.name == "nt":
-        caminho = caminho.replace("/", "\\")
-        return fr"\\servidor\Ethos\{caminho}"
-
-    else:
-        caminho = caminho.replace("\\","/")
-        return rf"/mnt/win/{caminho}"
-
+raiz = Path(os.getenv('RAIZ'))
 
 
 
 try:
     for natureza in naturezas:
-        for pasta in os.listdir(getCaminho(fr"SERVIDOR/{natureza}/Clientes ativos")):
+        for pasta in  [p.name for p in  Path(fr"{raiz}/{natureza}/Clientes ativos").iterdir()]:
 
             codPasta = pasta.split(" - ")[-1]
-            pastas[codPasta] = getCaminho(fr"SERVIDOR/{natureza}/Clientes ativos/{pasta}")
+            pastas[codPasta] = Path(fr"{raiz}/{natureza}/Clientes ativos/{pasta}")
 
     del codPasta,pasta, naturezas, natureza
 except FileNotFoundError as e:
@@ -42,7 +29,7 @@ except Exception as e:
 
 
 class Cliente:
-    def __init__(self, razao, cod, nomeFatasia, cnpj, ramo, dataInicio, situacao,regime, enderecoEmp, responsavelEmp):
+    def __init__(self, razao, cod, nomeFatasia, cnpj, ramo, dataInicio,dataInativada, situacao,regime, enderecoEmp, responsavelEmp,cnae,i_estadual,  socios = list):
         self.razao = razao
         self.cod = int(cod)
         self.nomeFantasia = nomeFatasia
@@ -50,13 +37,22 @@ class Cliente:
         self.regime = regime
         self.ramo = ramo
         self.dataEntrada = dataInicio
+        self.dataInativada = dataInativada
         self.ativa = situacao != "I"
         self.enderecoEmp = enderecoEmp
         self.responsavel = responsavelEmp
         self.toList = [cod, razao, cnpj, nomeFatasia, situacao, enderecoEmp, responsavelEmp]
         self.situacao = situacao
+        self.cnae = cnae
+        self.socios = socios
+        self.i_estadual = i_estadual
 
 
+    def __str__(self):
+        return f"{self.razao} - {self.cod}"
+
+    def __repr__(self):
+        return self.__str__()
 
     def filial(self):
         if self.cnpj is None: return False
@@ -67,6 +63,7 @@ class Cliente:
         return pastas[str(self.cod)]
 
 
+
 class responsavel:
 
     def __init__(self, nome, cpf, enderecoResp):
@@ -74,6 +71,11 @@ class responsavel:
         self.cpf = cpf
         self.endereco = enderecoResp
 
+    def __str__(self):
+        return f"{self.nome}"
+
+    def __repr__(self):
+        return self.__str__()
 
 class endereco:
 
@@ -88,4 +90,9 @@ class endereco:
 
         self.usual = f"{logradouro}, {numero}, {municipio}"
 
+    def __str__(self):
+        return self.usual
+
+    def __repr__(self):
+        return self.__str__()
 
