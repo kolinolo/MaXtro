@@ -66,7 +66,7 @@ def querryToDFPG(query: str, bd=''):
 
 
 def executaComando(sql, bd=None):
-    if bd != '':
+    if bd:
 
         localEngine = create_engine(f'{conexao}/{bd}')
 
