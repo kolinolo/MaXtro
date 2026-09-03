@@ -3,15 +3,15 @@
   "tipo": "python",
 
   "id": "GerenciadorPFX",
-  "enabled": false,
+  "enabled": true,
 
-  "python_path": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\GerenciadorPFX2\\.venv\\Scripts\\python.exe",
+  "python_path": "/opt/GerenciadorPFX2/.venv/bin/python",
 
-  "working_dir": "C:\\Users\\Marcelo\\Documents\\Projetos GitHub\\GerenciadorPFX2",
+  "working_dir": "/opt/GerenciadorPFX2",
 
-  "script": "main.py",
+  "script": "Main.py",
 
-  "interval_minutes": 120,
+  "interval_minutes": 1,
   "time_range": "08:00 - 18:00",
   "day_of_week":"mon-fri"
 
