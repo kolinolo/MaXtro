@@ -7,10 +7,10 @@
 
 
   "working_dir": "/opt/MaXtro/scripts/",
-  "script": "/opt/MaXtro/scripts/Backup.sh",
+  "script": "/opt/MaXtro/scripts/Prune.sh",
 
 
-  "interval_minutes": 60,
+  "interval_minutes": 220,
   "day_of_week":"mon-fri",
   "time_range": "10:30 - 21:00"
 }

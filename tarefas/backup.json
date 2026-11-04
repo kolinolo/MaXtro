@@ -12,6 +12,6 @@
 
   "interval_minutes": 60,
   "day_of_week":"mon-fri",
-  "time_range": "10:30 - 21:00"
+  "time_range": "7:30 - 21:00"
 }
 
